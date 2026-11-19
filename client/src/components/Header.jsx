@@ -1,78 +1,81 @@
 import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import Icon from "./Icon";
 import Logo from "./Logo";
 
 function Header({ page, go }) {
   const [open, setOpen] = useState(false);
   return (
-    <header className="site-header [height:76px] [position:sticky] [top:0] [z-index:50] [background:rgba(255,_255,_255,_.92)] [border-bottom:1px_solid_rgba(226,_232,_240,_.82)] [backdrop-filter:blur(16px)] [@media(max-width:760px)]:[height:66px]">
-      <div className="nav-shell [height:100%] [width:min(1240px,_calc(100%_-_40px))] [margin:auto] [display:flex] [align-items:center] [justify-content:space-between] [gap:30px] [@media(max-width:760px)]:[width:min(100%_-_28px,_1180px)]">
+    <header className="sticky top-0 z-50 h-19 border-b border-slate-200/80 bg-white/90 backdrop-blur-md max-[760px]:h-[66px]">
+      <div className="mx-auto flex h-full w-[calc(100%-40px)] max-w-[1240px] items-center justify-between gap-[30px] max-[760px]:w-[calc(100%-28px)]">
         <Logo onClick={() => go("home")} />
         <nav
-          className={
+          className={`flex items-center gap-7 ${
             open
-              ? "nav-links open [display:flex] [&_a]:[border:0] [&_a]:[background:none] [&_a]:[padding:8px_0] [&_a]:[font-size:14px] [&_a]:[font-weight:600] [&_a]:[color:#475569] [&_a]:[text-decoration:none] [&_a]:[cursor:pointer] [&_a.active]:[color:var(--navy)]"
-              : "nav-links [&_a]:[border:0] [&_a]:[background:none] [&_a]:[padding:8px_0] [&_a]:[font-size:14px] [&_a]:[font-weight:600] [&_a]:[color:#475569] [&_a]:[text-decoration:none] [&_a]:[cursor:pointer] [&_a.active]:[color:var(--navy)]"
-          }
+              ? "max-[760px]:absolute max-[760px]:left-3.5 max-[760px]:right-3.5 max-[760px]:top-[66px] max-[760px]:flex-col max-[760px]:items-start max-[760px]:gap-2 max-[760px]:rounded-xl max-[760px]:border max-[760px]:border-slate-200 max-[760px]:bg-white max-[760px]:p-4 max-[760px]:shadow-lg"
+              : "max-[760px]:hidden"
+          }`}
           aria-label="Main navigation"
         >
-          <a
-            href="#/discover"
-            className={page === "discover" ? "active" : ""}
+          <NavLink
+            to="/discover"
+            className={({ isActive }) =>
+              `py-2 text-sm font-semibold no-underline ${
+                isActive || page === "discover"
+                  ? "text-blue-950"
+                  : "text-slate-600 hover:text-blue-950"
+              }`
+            }
             onClick={() => {
               setOpen(false);
             }}
           >
             Discover Creators
-          </a>
-          <a
-            href="#/discover"
+          </NavLink>
+          <Link
+            to="/discover"
+            className="py-2 text-sm font-semibold text-slate-600 no-underline hover:text-blue-950"
             onClick={() => {
               setOpen(false);
             }}
           >
             For Brands
-          </a>
-          <a
-            href="#/dashboard"
+          </Link>
+          <Link
+            to="/dashboard"
+            className="py-2 text-sm font-semibold text-slate-600 no-underline hover:text-blue-950"
             onClick={() => {
               setOpen(false);
             }}
           >
             For Creators
-          </a>
-          <a
-            href="#/#how"
+          </Link>
+          <Link
+            to="/?section=how"
+            className="py-2 text-sm font-semibold text-slate-600 no-underline hover:text-blue-950"
             onClick={() => {
               setOpen(false);
-              setTimeout(
-                () =>
-                  document
-                    .getElementById("how")
-                    ?.scrollIntoView({ behavior: "smooth" }),
-                30,
-              );
             }}
           >
             How It Works
-          </a>
+          </Link>
         </nav>
-        <div className="nav-actions [display:flex] [align-items:center] [gap:18px] [@media(max-width:760px)]:[display:none]">
-          <a
-            href="#/dashboard"
-            className="text-button [border:0] [background:none] [padding:8px_0] [font-size:14px] [font-weight:600] [color:#475569] [cursor:pointer] [text-decoration:none]"
+        <div className="flex items-center gap-[18px] max-[760px]:hidden">
+          <Link
+            to="/dashboard"
+            className="py-2 text-sm font-semibold text-slate-600 no-underline hover:text-blue-950"
           >
             Log in
-          </a>
-          <a
-            href="#/dashboard"
-            className="button button-primary [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] [text-decoration:none] hover:[transform:translateY(-1px)] [background:var(--navy)] [color:white] [box-shadow:0_7px_18px_rgba(23,_37,_84,_.17)] hover:[background:#24366d]"
+          </Link>
+          <Link
+            to="/dashboard"
+            className="inline-flex min-h-[42px] items-center justify-center gap-2 whitespace-nowrap rounded-[10px] bg-blue-950 px-[18px] text-sm font-bold text-white no-underline shadow-md transition hover:-translate-y-px hover:bg-blue-900"
           >
             Join PostYangu <Icon name="arrow" size={17} />
-          </a>
+          </Link>
         </div>
         <button
-          className="menu-button [border:0] [background:none] [padding:8px] [display:none] [@media(max-width:760px)]:[display:grid] [@media(max-width:760px)]:[place-items:center]"
+          className="hidden border-0 bg-transparent p-2 max-[760px]:grid max-[760px]:place-items-center"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >

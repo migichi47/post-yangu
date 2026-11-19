@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
@@ -6,51 +7,73 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 
-export default function App() {
-  const routeFromHash = () => {
-    const route = window.location.hash.replace(/^#\/?/, "").split("#")[0];
-    return ["discover", "profile", "dashboard"].includes(route) ? route : "home";
-  };
-
-  const [page, setPage] = useState(routeFromHash);
+function RouteEffects() {
+  const location = useLocation();
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      setPage(routeFromHash());
-      const section = window.location.hash.split("#")[2];
-      if (section) {
-        window.requestAnimationFrame(() =>
-          document
-            .getElementById(section)
-            ?.scrollIntoView({ behavior: "smooth" }),
-        );
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    };
-
-    window.addEventListener("hashchange", handleRouteChange);
-    handleRouteChange();
-    return () => window.removeEventListener("hashchange", handleRouteChange);
-  }, []);
-
-  const go = (next) => {
-    const hash = next === "home" ? "#/" : `#/${next}`;
-    if (window.location.hash !== hash) {
-      window.location.hash = hash;
+    const section = new URLSearchParams(location.search).get("section");
+    if (section) {
+      window.requestAnimationFrame(() =>
+        document
+          .getElementById(section)
+          ?.scrollIntoView({ behavior: "smooth" }),
+      );
     } else {
-      setPage(next);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    setPage(next);
-  };
+  }, [location]);
+  return null;
+}
+
+function AppRoutes() {
+  const navigate = useNavigate();
+  const go = (page) => navigate(`/${page === "home" ? "" : page}`);
+
   return (
-    <div className="app min-h-screen">
-      {page !== "dashboard" && <Header page={page} go={go} />}
-      {page === "home" && <Home go={go} />}
-      {page === "discover" && <Discover go={go} />}
-      {page === "profile" && <Profile />}
-      {page === "dashboard" && <Dashboard go={go} />}
-    </div>
+    <>
+      <RouteEffects />
+      <Routes>
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
+        <Route
+          path="/"
+          element={
+            <div className="app">
+              <Header go={go} />
+              <Home go={go} />
+            </div>
+          }
+        />
+        <Route
+          path="/discover"
+          element={
+            <div className="app">
+              <Header go={go} />
+              <Discover go={go} />
+            </div>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <div className="app">
+              <Header go={go} />
+              <Profile />
+            </div>
+          }
+        />
+        <Route path="/dashboard" element={<Dashboard go={go} />} />
+      </Routes>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
