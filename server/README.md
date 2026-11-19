@@ -11,8 +11,8 @@ The default local URI is `mongodb://127.0.0.1:27017/post-yangu`.
 
 Authentication endpoints:
 
-- `POST /auth/signup` with username, password, display name, and profile image creates a creator and signs them in immediately.
-- `POST /auth/login` with `{ "username": "...", "password": "..." }` or `{ "email": "...", "password": "..." }` creates a one-hour session.
-- `GET /auth/me` returns the logged-in creator, or `401` when no valid session exists.
+- `POST /api/auth/signup` with username, password, display name, and profile image creates a creator and signs them in immediately.
+- `POST /api/auth/login` with `{ "username": "...", "password": "..." }` or `{ "email": "...", "password": "..." }` creates a one-hour session.
+- `GET /api/auth/me` returns the logged-in creator, or `401` when no valid session exists.
 
 The browser must send requests with credentials enabled so it can store and send the session cookie.

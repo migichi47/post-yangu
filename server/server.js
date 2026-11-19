@@ -5,7 +5,7 @@ import MongoStore from "connect-mongo";
 import cors from "cors";
 import mongoose from "mongoose";
 import { start as startDatabase } from "./config/db.js";
-import authRouter from "./routes/auth.js";
+import apiRouter from "./routes/index.js";
 
 const port = Number(process.env.PORT ?? 3000);
 const sessionSecret = process.env.SESSION_SECRET;
@@ -27,14 +27,6 @@ app.use(
   }),
 );
 app.use(express.json({ limit: "10kb" }));
-
-app.get("/api/health", (_request, response) => {
-  const connected = mongoose.connection.readyState === 1;
-  response.status(connected ? 200 : 503).json({
-    status: connected ? "ok" : "unavailable",
-    database: connected ? "connected" : "disconnected",
-  });
-});
 
 async function startServer() {
   await startDatabase();
@@ -61,7 +53,7 @@ async function startServer() {
       },
     }),
   );
-  app.use("/auth", authRouter);
+  app.use("/api", apiRouter);
 
   const server = await new Promise((resolve, reject) => {
     const listener = app.listen(port, () => resolve(listener));
