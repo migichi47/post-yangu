@@ -125,7 +125,7 @@ function Dashboard({ go, onLogout }) {
                   <span className="kicker [display:inline-flex] [align-items:center] [gap:7px] [color:var(--blue)] [font-size:12px] [font-weight:800] [letter-spacing:.08em] [text-transform:uppercase]">
                     Tuesday, 18 March
                   </span>
-                  <h1>Good morning, Wanjiku.</h1>
+                  <h1>Good morning,</h1>
                   <p>Here’s what’s happening with your creator business.</p>
                 </div>
                 <button className="button button-primary [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--navy)] [color:white] [box-shadow:0_7px_18px_rgba(23,_37,_84,_.17)] hover:[background:#24366d]">
