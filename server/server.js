@@ -76,3 +76,5 @@ startServer().catch(async (error) => {
   await mongoose.disconnect();
   process.exitCode = 1;
 });
+
+export default app;
