@@ -19,3 +19,20 @@ export async function postAuth(endpoint, data) {
 
   return result;
 }
+
+export async function getCurrentUser() {
+  const response = await fetch(`${serverUrl}/api/auth/me`, {
+    credentials: "include",
+  });
+
+  if (response.status === 401) {
+    return null;
+  }
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(result.error || "Unable to verify your session.");
+  }
+
+  return result.creator;
+}
