@@ -1,4 +1,13 @@
 export const photos = {
+  kennar: "/kennar.jpg",
+  mammito: "/mammito.jpg",
+  majimbo: "/majimbo.jpg",
+  kabi: "/kabi.jpg",
+  pluto: "/pluto.jpg",
+  kingKaka: "/king-kaka.jpg",
+  mutua: "/mutua.jpg",
+  muthoni: "/muthoni.jpg",
+  maxine: "/maxine.jpg",
   wanjiku:
     "https://images.unsplash.com/photo-1709820300614-28c47eedcd39?auto=format&fit=crop&w=900&q=85",
   amina:
