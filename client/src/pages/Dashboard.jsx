@@ -60,7 +60,9 @@ function Dashboard({ go, onLogout }) {
             <button
               className={navClass(slug)}
               onClick={() =>
-                navigate(slug === "overview" ? "/dashboard" : `/dashboard/${slug}`)
+                navigate(
+                  slug === "overview" ? "/dashboard" : `/dashboard/${slug}`,
+                )
               }
               key={label}
             >
@@ -118,180 +120,234 @@ function Dashboard({ go, onLogout }) {
         <div className="dash-content [max-width:1260px] [margin:auto] [padding:32px] [@media(max-width:760px)]:[padding:22px_14px]">
           {activeSection === "overview" ? (
             <>
-          <div className="dash-welcome [display:flex] [justify-content:space-between] [align-items:end] [&_h1]:[font-size:28px] [&_h1]:[margin:7px_0_4px] [&_h1]:[letter-spacing:-.03em] [&_p]:[color:var(--muted)] [&_p]:[font-size:12px] [&_p]:[margin:0] [@media(max-width:760px)]:[align-items:start] [@media(max-width:760px)]:[&_h1]:[font-size:24px] [@media(max-width:760px)]:[&_>_.button]:[display:none]">
-            <div>
-              <span className="kicker [display:inline-flex] [align-items:center] [gap:7px] [color:var(--blue)] [font-size:12px] [font-weight:800] [letter-spacing:.08em] [text-transform:uppercase]">
-                Tuesday, 18 March
-              </span>
-              <h1>Good morning, Wanjiku.</h1>
-              <p>Here’s what’s happening with your creator business.</p>
-            </div>
-            <button className="button button-primary [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--navy)] [color:white] [box-shadow:0_7px_18px_rgba(23,_37,_84,_.17)] hover:[background:#24366d]">
-              + Add an offering
-            </button>
-          </div>
-          <div className="demo-label [display:inline-block] [background:#fff7ed] [color:#c2410c] [border:1px_solid_#fed7aa] [padding:5px_8px] [border-radius:6px] [font-size:8px] [font-weight:800] [margin:20px_0_12px] [text-transform:uppercase] [letter-spacing:.05em]">
-            Demo workspace · Sample data
-          </div>
-          <div className="metric-grid [display:grid] [grid-template-columns:repeat(4,_1fr)] [gap:14px] [&_article]:[border:1px_solid_var(--border)] [&_article]:[background:white] [&_article]:[border-radius:13px] [&_article]:[padding:17px] [&_article_>_div]:[display:flex] [&_article_>_div]:[align-items:center] [&_article_>_div]:[justify-content:space-between] [&_p]:[color:var(--muted)] [&_p]:[font-size:10px] [&_p]:[margin:14px_0_4px] [&_article_>_strong]:[font-size:21px] [@media(max-width:1000px)]:[grid-template-columns:repeat(2,_1fr)] [@media(max-width:760px)]:[grid-template-columns:1fr_1fr] [@media(max-width:760px)]:[gap:9px] [@media(max-width:760px)]:[&_article]:[padding:14px] [@media(max-width:430px)]:[&_article_>_strong]:[font-size:17px]">
-            {[
-              ["wallet", "Total earnings", "KSh 86,400", "↑ 18.2%", "blue"],
-              ["inbox", "Brand inquiries", "12", "+3 this week", "pink"],
-              ["users", "Profile views", "3,842", "↑ 24.8%", "purple"],
-              ["heart", "Superfans", "126", "+14 this month", "peach"],
-            ].map(([icon, label, value, change, color]) => (
-              <article key={label}>
+              <div className="dash-welcome [display:flex] [justify-content:space-between] [align-items:end] [&_h1]:[font-size:28px] [&_h1]:[margin:7px_0_4px] [&_h1]:[letter-spacing:-.03em] [&_p]:[color:var(--muted)] [&_p]:[font-size:12px] [&_p]:[margin:0] [@media(max-width:760px)]:[align-items:start] [@media(max-width:760px)]:[&_h1]:[font-size:24px] [@media(max-width:760px)]:[&_>_.button]:[display:none]">
                 <div>
-                  <span
-                    className={`metric-icon ${color} ${color === "blue" ? "[background:var(--blue-light)] [color:var(--blue)]" : color === "pink" ? "[background:var(--pink-light)] [color:var(--pink)]" : color === "purple" ? "[background:#ede9fe] [color:#7c3aed]" : "[background:#ffedd5] [color:#ea580c]"}`}
-                  >
-                    <Icon name={icon} />
+                  <span className="kicker [display:inline-flex] [align-items:center] [gap:7px] [color:var(--blue)] [font-size:12px] [font-weight:800] [letter-spacing:.08em] [text-transform:uppercase]">
+                    Tuesday, 18 March
                   </span>
-                  <span className="trend [color:#16a34a] [font-size:9px] [font-weight:700]">
-                    {change}
-                  </span>
+                  <h1>Good morning, Wanjiku.</h1>
+                  <p>Here’s what’s happening with your creator business.</p>
                 </div>
-                <p>{label}</p>
-                <strong>{value}</strong>
-              </article>
-            ))}
-          </div>
-          <div className="dash-grid [display:grid] [grid-template-columns:1.45fr_.75fr] [gap:14px] [margin-top:14px] [@media(max-width:760px)]:[grid-template-columns:1fr]">
-            <section className="dash-card earnings-chart [border:1px_solid_var(--border)] [background:white] [border-radius:13px] [padding:20px] [min-width:0]">
-              <div className="dash-card-head [display:flex] [align-items:start] [justify-content:space-between] [&_h2]:[font-size:14px] [&_h2]:[margin:0_0_3px] [&_p]:[font-size:9px] [&_p]:[color:var(--muted)] [&_p]:[margin:0] [&_select]:[border:1px_solid_var(--border)] [&_select]:[border-radius:7px] [&_select]:[background:white] [&_select]:[padding:7px] [&_select]:[font-size:9px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[padding:0] [&_button]:[color:var(--blue)] [&_button]:[font-weight:700] [&_button]:[font-size:9px] [&_button]:[cursor:pointer]">
-                <div>
-                  <h2>Earnings</h2>
-                  <p>Last 6 months · KSh</p>
-                </div>
-                <select>
-                  <option>Last 6 months</option>
-                </select>
+                <button className="button button-primary [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--navy)] [color:white] [box-shadow:0_7px_18px_rgba(23,_37,_84,_.17)] hover:[background:#24366d]">
+                  + Add an offering
+                </button>
               </div>
-              <div className="chart-total [display:flex] [align-items:center] [gap:10px] [margin-top:21px] [&_strong]:[font-size:20px] [&_span]:[color:#16a34a] [&_span]:[font-size:8px] [&_span]:[font-weight:700] [&_span]:[background:#ecfdf5] [&_span]:[padding:4px_6px] [&_span]:[border-radius:5px]">
-                <strong>KSh 312,800</strong>
-                <span>+22.4% vs previous period</span>
+              <div className="demo-label [display:inline-block] [background:#fff7ed] [color:#c2410c] [border:1px_solid_#fed7aa] [padding:5px_8px] [border-radius:6px] [font-size:8px] [font-weight:800] [margin:20px_0_12px] [text-transform:uppercase] [letter-spacing:.05em]">
+                Demo workspace · Sample data
               </div>
-              <MiniChart />
-            </section>
-            <section className="dash-card activity-card [border:1px_solid_var(--border)] [background:white] [border-radius:13px] [padding:20px] [min-width:0] [@media(max-width:760px)]:[grid-row:2]">
-              <div className="dash-card-head [display:flex] [align-items:start] [justify-content:space-between] [&_h2]:[font-size:14px] [&_h2]:[margin:0_0_3px] [&_p]:[font-size:9px] [&_p]:[color:var(--muted)] [&_p]:[margin:0] [&_select]:[border:1px_solid_var(--border)] [&_select]:[border-radius:7px] [&_select]:[background:white] [&_select]:[padding:7px] [&_select]:[font-size:9px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[padding:0] [&_button]:[color:var(--blue)] [&_button]:[font-weight:700] [&_button]:[font-size:9px] [&_button]:[cursor:pointer]">
-                <div>
-                  <h2>Recent activity</h2>
-                  <p>Your latest updates</p>
-                </div>
-                <button>View all</button>
-              </div>
-              <div className="activity-list [margin-top:16px] [&_article]:[display:flex] [&_article]:[align-items:center] [&_article]:[gap:10px] [&_article]:[padding:11px_0] [&_article]:[border-top:1px_solid_var(--border)] [&_article_>_div]:[display:flex] [&_article_>_div]:[flex-direction:column] [&_article_>_div]:[flex:1] [&_strong]:[font-size:10px] [&_small]:[color:var(--muted)] [&_small]:[font-size:8px] [&_small]:[margin-top:2px] [&_.metric-icon]:[width:30px] [&_.metric-icon]:[height:30px] [&_article_>_svg]:[color:var(--muted)]">
+              <div className="metric-grid [display:grid] [grid-template-columns:repeat(4,_1fr)] [gap:14px] [&_article]:[border:1px_solid_var(--border)] [&_article]:[background:white] [&_article]:[border-radius:13px] [&_article]:[padding:17px] [&_article_>_div]:[display:flex] [&_article_>_div]:[align-items:center] [&_article_>_div]:[justify-content:space-between] [&_p]:[color:var(--muted)] [&_p]:[font-size:10px] [&_p]:[margin:14px_0_4px] [&_article_>_strong]:[font-size:21px] [@media(max-width:1000px)]:[grid-template-columns:repeat(2,_1fr)] [@media(max-width:760px)]:[grid-template-columns:1fr_1fr] [@media(max-width:760px)]:[gap:9px] [@media(max-width:760px)]:[&_article]:[padding:14px] [@media(max-width:430px)]:[&_article_>_strong]:[font-size:17px]">
                 {[
-                  [
-                    "inbox",
-                    "New brand inquiry",
-                    "Safari Air Kenya · 12 min ago",
-                    "pink",
-                  ],
-                  [
-                    "heart",
-                    "New superfan joined",
-                    "Faith N. · 2 hours ago",
-                    "peach",
-                  ],
-                  [
-                    "wallet",
-                    "Payout completed",
-                    "KSh 24,500 · Yesterday",
-                    "blue",
-                  ],
-                  [
-                    "shop",
-                    "New guide order",
-                    "Nairobi Weekend Guide · Yesterday",
-                    "purple",
-                  ],
-                ].map(([icon, title, meta, color]) => (
-                  <article key={title}>
-                    <span
-                      className={`metric-icon ${color} ${color === "blue" ? "[background:var(--blue-light)] [color:var(--blue)]" : color === "pink" ? "[background:var(--pink-light)] [color:var(--pink)]" : color === "purple" ? "[background:#ede9fe] [color:#7c3aed]" : "[background:#ffedd5] [color:#ea580c]"}`}
-                    >
-                      <Icon name={icon} size={17} />
-                    </span>
+                  ["wallet", "Total earnings", "KSh 86,400", "↑ 18.2%", "blue"],
+                  ["inbox", "Brand inquiries", "12", "+3 this week", "pink"],
+                  ["users", "Profile views", "3,842", "↑ 24.8%", "purple"],
+                  ["heart", "Superfans", "126", "+14 this month", "peach"],
+                ].map(([icon, label, value, change, color]) => (
+                  <article key={label}>
                     <div>
-                      <strong>{title}</strong>
-                      <small>{meta}</small>
+                      <span
+                        className={`metric-icon ${color} ${color === "blue" ? "[background:var(--blue-light)] [color:var(--blue)]" : color === "pink" ? "[background:var(--pink-light)] [color:var(--pink)]" : color === "purple" ? "[background:#ede9fe] [color:#7c3aed]" : "[background:#ffedd5] [color:#ea580c]"}`}
+                      >
+                        <Icon name={icon} />
+                      </span>
+                      <span className="trend [color:#16a34a] [font-size:9px] [font-weight:700]">
+                        {change}
+                      </span>
                     </div>
-                    <Icon name="arrow" size={15} />
+                    <p>{label}</p>
+                    <strong>{value}</strong>
                   </article>
                 ))}
               </div>
-            </section>
-            <section className="dash-card inquiry-card [border:1px_solid_var(--border)] [background:white] [border-radius:13px] [padding:20px] [min-width:0] [grid-column:1_/_-1] [@media(max-width:760px)]:[grid-column:auto] [@media(max-width:760px)]:[overflow-x:auto]">
-              <div className="dash-card-head [display:flex] [align-items:start] [justify-content:space-between] [&_h2]:[font-size:14px] [&_h2]:[margin:0_0_3px] [&_p]:[font-size:9px] [&_p]:[color:var(--muted)] [&_p]:[margin:0] [&_select]:[border:1px_solid_var(--border)] [&_select]:[border-radius:7px] [&_select]:[background:white] [&_select]:[padding:7px] [&_select]:[font-size:9px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[padding:0] [&_button]:[color:var(--blue)] [&_button]:[font-weight:700] [&_button]:[font-size:9px] [&_button]:[cursor:pointer]">
-                <div>
-                  <h2>Brand inquiries</h2>
-                  <p>Opportunities needing your attention</p>
-                </div>
-                <button>View pipeline</button>
-              </div>
-              <div className="inquiry-table [margin-top:15px]">
-                <div className="table-row head [min-width:690px] [display:grid] [grid-template-columns:1.3fr_1.4fr_.8fr_.8fr_.8fr] [align-items:center] [min-height:49px] [border-top:1px_solid_var(--border)] [font-size:9px] [&:not(.head)]:[padding-inline:8px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[display:flex] [&_button]:[align-items:center] [&_button]:[gap:5px] [&_button]:[color:var(--blue)] [&_button]:[font-size:9px] [&_button]:[font-weight:700] [&_button]:[cursor:pointer] [min-height:31px] [background:var(--surface)] [border:0] [color:var(--muted)] [font-weight:700] [padding-inline:8px]">
-                  <span>Brand</span>
-                  <span>Campaign</span>
-                  <span>Budget</span>
-                  <span>Status</span>
-                  <span>Next action</span>
-                </div>
-                {[
-                  [
-                    "SA",
-                    "Safari Air Kenya",
-                    "Coastal routes launch",
-                    "KSh 75,000",
-                    "New",
-                    "Review brief",
-                  ],
-                  [
-                    "NK",
-                    "Nia Kenya",
-                    "New season lookbook",
-                    "KSh 48,000",
-                    "In discussion",
-                    "Reply",
-                  ],
-                  [
-                    "BK",
-                    "Brew Kenya",
-                    "Cold brew summer",
-                    "KSh 32,500",
-                    "Quoted",
-                    "Await response",
-                  ],
-                ].map(([initial, brand, campaign, budget, status, action]) => (
-                  <div
-                    className="table-row [min-width:690px] [display:grid] [grid-template-columns:1.3fr_1.4fr_.8fr_.8fr_.8fr] [align-items:center] [min-height:49px] [border-top:1px_solid_var(--border)] [font-size:9px] [&:not(.head)]:[padding-inline:8px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[display:flex] [&_button]:[align-items:center] [&_button]:[gap:5px] [&_button]:[color:var(--blue)] [&_button]:[font-size:9px] [&_button]:[font-weight:700] [&_button]:[cursor:pointer]"
-                    key={brand}
-                  >
-                    <span className="brand-cell [display:flex] [align-items:center] [gap:8px] [&_i]:[width:28px] [&_i]:[height:28px] [&_i]:[background:var(--navy)] [&_i]:[color:white] [&_i]:[border-radius:7px] [&_i]:[display:grid] [&_i]:[place-items:center] [&_i]:[font-style:normal] [&_i]:[font-weight:700]">
-                      <i>{initial}</i>
-                      <strong>{brand}</strong>
-                    </span>
-                    <span>{campaign}</span>
-                    <strong>{budget}</strong>
-                    <span>
-                      <em
-                        className={`status ${status.toLowerCase().replace(" ", "-")} ${status === "New" ? "[background:var(--pink-light)] [color:#be185d]" : status === "In Discussion" ? "[background:var(--blue-light)] [color:#1d4ed8]" : "[background:#ede9fe] [color:#6d28d9]"}`}
-                      >
-                        {status}
-                      </em>
-                    </span>
-                    <span>
-                      <button>
-                        {action} <Icon name="arrow" size={14} />
-                      </button>
-                    </span>
+              <div className="dash-grid [display:grid] [grid-template-columns:1.45fr_.75fr] [gap:14px] [margin-top:14px] [@media(max-width:760px)]:[grid-template-columns:1fr]">
+                <section className="dash-card earnings-chart [border:1px_solid_var(--border)] [background:white] [border-radius:13px] [padding:20px] [min-width:0]">
+                  <div className="dash-card-head [display:flex] [align-items:start] [justify-content:space-between] [&_h2]:[font-size:14px] [&_h2]:[margin:0_0_3px] [&_p]:[font-size:9px] [&_p]:[color:var(--muted)] [&_p]:[margin:0] [&_select]:[border:1px_solid_var(--border)] [&_select]:[border-radius:7px] [&_select]:[background:white] [&_select]:[padding:7px] [&_select]:[font-size:9px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[padding:0] [&_button]:[color:var(--blue)] [&_button]:[font-weight:700] [&_button]:[font-size:9px] [&_button]:[cursor:pointer]">
+                    <div>
+                      <h2>Earnings</h2>
+                      <p>Last 6 months · KSh</p>
+                    </div>
+                    <select>
+                      <option>Last 6 months</option>
+                    </select>
                   </div>
-                ))}
+                  <div className="chart-total [display:flex] [align-items:center] [gap:10px] [margin-top:21px] [&_strong]:[font-size:20px] [&_span]:[color:#16a34a] [&_span]:[font-size:8px] [&_span]:[font-weight:700] [&_span]:[background:#ecfdf5] [&_span]:[padding:4px_6px] [&_span]:[border-radius:5px]">
+                    <strong>KSh 312,800</strong>
+                    <span>+22.4% vs previous period</span>
+                  </div>
+                  <MiniChart />
+                </section>
+                <section className="dash-card activity-card [border:1px_solid_var(--border)] [background:white] [border-radius:13px] [padding:20px] [min-width:0] [@media(max-width:760px)]:[grid-row:2]">
+                  <div className="dash-card-head [display:flex] [align-items:start] [justify-content:space-between] [&_h2]:[font-size:14px] [&_h2]:[margin:0_0_3px] [&_p]:[font-size:9px] [&_p]:[color:var(--muted)] [&_p]:[margin:0] [&_select]:[border:1px_solid_var(--border)] [&_select]:[border-radius:7px] [&_select]:[background:white] [&_select]:[padding:7px] [&_select]:[font-size:9px] [&_button]:[border:0] [&_button]:[background:none] [&_button]:[padding:0] [&_button]:[color:var(--blue)] [&_button]:[font-weight:700] [&_button]:[font-size:9px] [&_button]:[cursor:pointer]">
+                    <div>
+                      <h2>Recent activity</h2>
+                      <p>Your latest updates</p>
+                    </div>
+                    <button>View all</button>
+                  </div>
+                  <div className="activity-list [margin-top:16px] [&_article]:[display:flex] [&_article]:[align-items:center] [&_article]:[gap:10px] [&_article]:[padding:11px_0] [&_article]:[border-top:1px_solid_var(--border)] [&_article_>_div]:[display:flex] [&_article_>_div]:[flex-direction:column] [&_article_>_div]:[flex:1] [&_strong]:[font-size:10px] [&_small]:[color:var(--muted)] [&_small]:[font-size:8px] [&_small]:[margin-top:2px] [&_.metric-icon]:[width:30px] [&_.metric-icon]:[height:30px] [&_article_>_svg]:[color:var(--muted)]">
+                    {[
+                      [
+                        "inbox",
+                        "New brand inquiry",
+                        "Safari Air Kenya · 12 min ago",
+                        "pink",
+                      ],
+                      [
+                        "heart",
+                        "New superfan joined",
+                        "Faith N. · 2 hours ago",
+                        "peach",
+                      ],
+                      [
+                        "wallet",
+                        "Payout completed",
+                        "KSh 24,500 · Yesterday",
+                        "blue",
+                      ],
+                      [
+                        "shop",
+                        "New guide order",
+                        "Nairobi Weekend Guide · Yesterday",
+                        "purple",
+                      ],
+                    ].map(([icon, title, meta, color]) => (
+                      <article key={title}>
+                        <span
+                          className={`flex items-center justify-center metric-icon ${color} ${color === "blue" ? "[background:var(--blue-light)] [color:var(--blue)]" : color === "pink" ? "[background:var(--pink-light)] [color:var(--pink)]" : color === "purple" ? "[background:#ede9fe] [color:#7c3aed]" : "[background:#ffedd5] [color:#ea580c]"}`}
+                        >
+                          <Icon name={icon} size={17} />
+                        </span>
+                        <div>
+                          <strong>{title}</strong>
+                          <small>{meta}</small>
+                        </div>
+                        <Icon name="arrow" size={15} />
+                      </article>
+                    ))}
+                  </div>
+                </section>
+                <section className="col-span-full min-w-0 rounded-xl border border-[var(--border)] bg-white p-5 max-[760px]:col-auto">
+                  {/* Card Header */}
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="mb-1 text-sm font-bold text-[var(--navy)]">
+                        Brand inquiries
+                      </h2>
+
+                      <p className="text-xs text-[var(--muted)]">
+                        Opportunities needing your attention
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="shrink-0 text-xs font-bold text-[var(--blue)] transition-colors hover:text-[var(--navy)]"
+                    >
+                      View pipeline
+                    </button>
+                  </div>
+
+                  {/* Inquiry Table */}
+                  <div className="mt-4 overflow-x-auto">
+                    <div className="min-w-[690px]">
+                      {/* Table Header */}
+                      <div className="grid min-h-10 grid-cols-[1.3fr_1.4fr_0.8fr_0.8fr_0.8fr] items-center border-y border-[var(--border)] bg-[var(--surface)] px-2 text-[10px] font-bold uppercase tracking-wide text-[var(--muted)]">
+                        <span>Brand</span>
+                        <span>Campaign</span>
+                        <span>Budget</span>
+                        <span>Status</span>
+                        <span>Next action</span>
+                      </div>
+
+                      {/* Table Rows */}
+                      {[
+                        [
+                          "SA",
+                          "Safari Air Kenya",
+                          "Coastal routes launch",
+                          "KSh 75,000",
+                          "New",
+                          "Review brief",
+                        ],
+                        [
+                          "NK",
+                          "Nia Kenya",
+                          "New season lookbook",
+                          "KSh 48,000",
+                          "In discussion",
+                          "Reply",
+                        ],
+                        [
+                          "BK",
+                          "Brew Kenya",
+                          "Cold brew summer",
+                          "KSh 32,500",
+                          "Quoted",
+                          "Await response",
+                        ],
+                      ].map(
+                        ([
+                          initial,
+                          brand,
+                          campaign,
+                          budget,
+                          status,
+                          action,
+                        ]) => (
+                          <div
+                            key={brand}
+                            className="grid min-h-[56px] grid-cols-[1.3fr_1.4fr_0.8fr_0.8fr_0.8fr] items-center border-b border-[var(--border)] px-2 text-[11px] last:border-b-0"
+                          >
+                            {/* Brand */}
+                            <span className="flex items-center gap-3">
+                              <i className="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--navy)] text-xs font-bold not-italic text-white">
+                                {initial}
+                              </i>
+
+                              <strong className="font-semibold text-[var(--navy)]">
+                                {brand}
+                              </strong>
+                            </span>
+
+                            {/* Campaign */}
+                            <span className="text-gray-600">{campaign}</span>
+
+                            {/* Budget */}
+                            <strong className="font-semibold text-[var(--navy)]">
+                              {budget}
+                            </strong>
+
+                            {/* Status */}
+                            <span>
+                              <em
+                                className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-semibold not-italic ${
+                                  status === "New"
+                                    ? "bg-pink-100 text-pink-700"
+                                    : status === "In discussion"
+                                      ? "bg-blue-100 text-blue-700"
+                                      : "bg-violet-100 text-violet-700"
+                                }`}
+                              >
+                                {status}
+                              </em>
+                            </span>
+
+                            {/* Action */}
+                            <span>
+                              <button
+                                type="button"
+                                className="inline-flex items-center gap-1.5 font-semibold text-[var(--blue)] transition-colors hover:text-[var(--navy)]"
+                              >
+                                {action}
+                                <Icon name="arrow" size={14} />
+                              </button>
+                            </span>
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </div>
+                </section>
               </div>
-            </section>
-          </div>
             </>
           ) : (
             <DashboardSection section={activeSection} go={go} />
@@ -303,7 +359,9 @@ function Dashboard({ go, onLogout }) {
           <button
             className={navClass(slug)}
             onClick={() =>
-              navigate(slug === "overview" ? "/dashboard" : `/dashboard/${slug}`)
+              navigate(
+                slug === "overview" ? "/dashboard" : `/dashboard/${slug}`,
+              )
             }
             key={label}
           >
