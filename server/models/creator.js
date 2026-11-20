@@ -33,6 +33,22 @@ const creatorSchema = new mongoose.Schema(
       type: [{ type: String, trim: true }],
       default: [],
     },
+    location: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
+    startingFollowerCount: {
+      type: Number,
+      min: 0,
+      default: 1000,
+      select: false,
+    },
+    location: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
     email: {
       type: String,
       lowercase: true,

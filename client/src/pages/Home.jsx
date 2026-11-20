@@ -196,7 +196,7 @@ function Home({ go }) {
                 <CreatorCard
                   key={creator.handle}
                   creator={creator}
-                  onView={() => go(`creators/${creator.handle.slice(1)}`)}
+                  onView={() => go("discover")}
                 />
               ))}
             </div>

@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
 import CreatorDetails from "./pages/CreatorDetails";
+import FanDashboard from "./pages/FanDashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -105,7 +106,9 @@ function AppRoutes() {
       navigate(
         requestedPath?.startsWith("/creators/")
           ? requestedPath
-          : "/discover",
+          : requestedPath === "/discover"
+            ? "/discover"
+            : "/fan/dashboard",
         { replace: true },
       );
       return;
@@ -166,6 +169,17 @@ function AppRoutes() {
               <div className="app">
                 <Header go={go} />
                 <CreatorDetails />
+              </div>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/fan/dashboard/:section?"
+          element={
+            <RequireAuth allowedAccountTypes={["fan"]}>
+              <div className="app">
+                <Header go={go} />
+                <FanDashboard onLogout={logout} />
               </div>
             </RequireAuth>
           }

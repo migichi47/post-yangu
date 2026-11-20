@@ -1,6 +1,7 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 import authRouter from "./auth.js";
+import creatorRouter from "./creators.js";
 
 const apiRouter = Router();
 
@@ -13,5 +14,6 @@ apiRouter.get("/health", (_request, response) => {
 });
 
 apiRouter.use("/auth", authRouter);
+apiRouter.use("/creators", creatorRouter);
 
 export default apiRouter;

@@ -9,6 +9,7 @@ function publicCreator(creator) {
     profileImage: creator.profileImage,
     coverImage: creator.coverImage,
     niches: creator.niches,
+    location: creator.location,
     email: creator.email,
     phoneNumber: creator.phoneNumber,
     isVerified: creator.isVerified,
@@ -69,6 +70,7 @@ export async function signup(request, response) {
     profileImage,
     coverImage,
     niches,
+    location,
     email,
     phoneNumber,
   } = request.body ?? {};
@@ -93,6 +95,7 @@ export async function signup(request, response) {
     (email !== undefined && typeof email !== "string") ||
     (phoneNumber !== undefined && typeof phoneNumber !== "string") ||
     (coverImage !== undefined && typeof coverImage !== "string") ||
+    (location !== undefined && typeof location !== "string") ||
     (niches !== undefined &&
       (!Array.isArray(niches) ||
         niches.some((niche) => typeof niche !== "string")))
@@ -107,6 +110,7 @@ export async function signup(request, response) {
     profileImage,
     coverImage,
     niches,
+    location,
     email,
     phoneNumber,
   });

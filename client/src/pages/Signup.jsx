@@ -45,6 +45,7 @@ const Signup = ({ onSubmit }) => {
     profileImage: "",
     coverImage: "",
     niches: [],
+    location: "",
     email: "",
     phoneNumber: "",
   });
@@ -337,6 +338,24 @@ const Signup = ({ onSubmit }) => {
                   placeholder="e.g. 0712345678"
                   autoComplete="tel"
                   required
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="creator-location"
+                  className="mb-2 block text-sm font-semibold text-slate-700"
+                >
+                  Location
+                </label>
+                <input
+                  id="creator-location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  placeholder="City or region"
+                  autoComplete="address-level2"
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
                 />
               </div>
