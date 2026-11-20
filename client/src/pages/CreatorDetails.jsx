@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import {
-  followCreator,
-  getCreator,
-  unfollowCreator,
-} from "../api/creators";
+import { followCreator, getCreator, unfollowCreator } from "../api/creators";
 import CreatorShop from "../components/CreatorShop";
 import ExclusiveChannel from "../components/ExclusiveChannel";
 import Icon from "../components/Icon";
@@ -323,11 +319,11 @@ function CreatorDetails() {
               Events
             </p>
             <h3 className="mt-2 text-xl font-bold text-slate-900">
-              Support an event
+              Call for an event
             </h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              Make a contribution toward a creator event and add an optional
-              message.
+              Get the creator to attend your event, eg. wedding, birthday, live
+              performance, etc.
             </p>
             <button
               type="button"

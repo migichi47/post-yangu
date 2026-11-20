@@ -17,7 +17,6 @@ const listingFilters = [
 
 function createSampleListings(creator) {
   const niche = creator.niches?.[0] || "creative";
-  const image = creator.coverImage || creator.profileImage;
 
   return [
     {
@@ -27,7 +26,9 @@ function createSampleListings(creator) {
       description: `A practical digital guide with ${creator.displayName}'s tips, tools, and personal recommendations.`,
       price: 850,
       delivery: "Digital download",
-      image,
+      image:
+        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=900&q=85",
+      imageAlt: "An open book and notebook for the digital field guide",
       isSample: true,
     },
     {
@@ -37,7 +38,9 @@ function createSampleListings(creator) {
       description: `Get focused advice and personal feedback directly from ${creator.displayName}.`,
       price: 3500,
       delivery: "45 minutes · online",
-      image: creator.profileImage,
+      image:
+        "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85",
+      imageAlt: "People in a one-on-one consultation around a table",
       isSample: true,
     },
     {
@@ -47,7 +50,9 @@ function createSampleListings(creator) {
       description: "Learn together in a relaxed, hands-on session with time for questions.",
       price: 2000,
       delivery: "60 minutes · online",
-      image,
+      image:
+        "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=900&q=85",
+      imageAlt: "A group gathered for a collaborative workshop",
       isSample: true,
     },
   ];
@@ -110,6 +115,7 @@ function CreatorShop({ creator }) {
         price: Number(price),
         delivery: delivery.trim() || (type === "product" ? "Product" : "By arrangement"),
         image: draftImage?.url || creator.coverImage || creator.profileImage,
+        imageAlt: title.trim(),
         isSample: false,
       },
       ...current,
@@ -206,8 +212,9 @@ function CreatorShop({ creator }) {
               <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
                 <img
                   src={listing.image}
-                  alt={listing.title}
+                  alt={listing.imageAlt || listing.title}
                   className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/45 to-transparent" />
                 <div className="absolute left-3 top-3">
@@ -404,7 +411,7 @@ function CreatorShop({ creator }) {
             <div className="relative aspect-[16/9] bg-slate-100">
               <img
                 src={selectedListing.image}
-                alt=""
+                alt={selectedListing.imageAlt || selectedListing.title}
                 className="h-full w-full object-cover"
               />
               <button
