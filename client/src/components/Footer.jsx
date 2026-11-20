@@ -24,7 +24,7 @@ function Footer({ go }) {
           <strong>Explore</strong>
           <button onClick={() => go("discover")}>Discover creators</button>
           <button>For brands</button>
-          <button>For creators</button>
+          <button onClick={() => go("login")}>For creators</button>
         </div>
         <div>
           <strong>Company</strong>

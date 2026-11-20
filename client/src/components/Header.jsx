@@ -42,7 +42,7 @@ function Header({ page, go }) {
             For Brands
           </Link>
           <Link
-            to="/dashboard"
+            to="/login"
             className="py-2 text-sm font-semibold text-slate-600 no-underline hover:text-blue-950"
             onClick={() => {
               setOpen(false);
@@ -62,13 +62,13 @@ function Header({ page, go }) {
         </nav>
         <div className="flex items-center gap-[18px] max-[760px]:hidden">
           <Link
-            to="/dashboard"
+            to="/login"
             className="py-2 text-sm font-semibold text-slate-600 no-underline hover:text-blue-950"
           >
             Log in
           </Link>
           <Link
-            to="/dashboard"
+            to="/signup"
             className="inline-flex min-h-[42px] items-center justify-center gap-2 whitespace-nowrap rounded-[10px] bg-blue-950 px-[18px] text-sm font-bold text-white no-underline shadow-md transition hover:-translate-y-px hover:bg-blue-900"
           >
             Join PostYangu <Icon name="arrow" size={17} />

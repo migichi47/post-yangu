@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
+import { postAuth } from "./api/auth";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function RouteEffects() {
   const location = useLocation();
@@ -28,6 +31,14 @@ function RouteEffects() {
 function AppRoutes() {
   const navigate = useNavigate();
   const go = (page) => navigate(`/${page === "home" ? "" : page}`);
+  const login = async (data) => {
+    await postAuth("login", data);
+    navigate("/dashboard");
+  };
+  const signup = async (data) => {
+    await postAuth("signup", data);
+    navigate("/dashboard");
+  };
 
   return (
     <>
@@ -64,6 +75,8 @@ function AppRoutes() {
             </div>
           }
         />
+        <Route path="/login" element={<Login onSubmit={login} />} />
+        <Route path="/signup" element={<Signup onSubmit={signup} />} />
         <Route path="/dashboard" element={<Dashboard go={go} />} />
       </Routes>
     </>

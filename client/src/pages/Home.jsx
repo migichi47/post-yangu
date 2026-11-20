@@ -29,7 +29,7 @@ function Home({ go }) {
               <div className="hero-actions [display:flex] [gap:12px] [margin-top:30px] [@media(max-width:760px)]:[flex-direction:column] [@media(max-width:760px)]:[align-items:stretch]">
                 <button
                   className="button button-primary button-large [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--navy)] [color:white] [box-shadow:0_7px_18px_rgba(23,_37,_84,_.17)] hover:[background:#24366d] [min-height:52px] [padding:0_24px] [border-radius:12px] [font-size:15px]"
-                  onClick={() => go("dashboard")}
+                  onClick={() => go("login")}
                 >
                   Join as a Creator <Icon name="arrow" />
                 </button>
@@ -289,7 +289,7 @@ function Home({ go }) {
               </p>
               <button
                 className="button button-pink button-large [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--pink)] [color:white] [box-shadow:0_7px_18px_rgba(236,_72,_153,_.2)] hover:[background:var(--pink-dark)] [min-height:52px] [padding:0_24px] [border-radius:12px] [font-size:15px]"
-                onClick={() => go("dashboard")}
+                onClick={() => go("login")}
               >
                 Create your free profile <Icon name="arrow" />
               </button>
