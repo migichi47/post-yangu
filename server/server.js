@@ -48,7 +48,7 @@ async function startServer() {
       cookie: {
         httpOnly: true,
         maxAge: sessionDurationMs,
-        sameSite: "lax",
+        sameSite: "none",
         secure: process.env.NODE_ENV === "production",
       },
     }),
