@@ -55,6 +55,7 @@ function CreatorCard({ creator, onView }) {
             <strong className="ml-2">{creator.rate}</strong>
           </div>
           <button
+            type="button"
             className="flex items-center gap-2 text-blue-800 hover:text-blue-900 cursor-pointer"
             onClick={onView}
           >

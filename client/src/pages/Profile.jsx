@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
-import TipModal from "../components/TipModal";
+import TransactionModal from "../components/TransactionModal";
 import { photos } from "../data/photos";
 import { useRateCardVisibility } from "../contexts/RateCardVisibilityContext";
 
 function Profile() {
-  const [tipOpen, setTipOpen] = useState(false);
+  const [transaction, setTransaction] = useState(null);
   const { isRateCardPublic } = useRateCardVisibility();
   const rates = [
     [
@@ -71,7 +71,7 @@ function Profile() {
                 </button>
                 <button
                   className="button button-pink [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--pink)] [color:white] [box-shadow:0_7px_18px_rgba(236,_72,_153,_.2)] hover:[background:var(--pink-dark)]"
-                  onClick={() => setTipOpen(true)}
+                  onClick={() => setTransaction("tip")}
                 >
                   <Icon name="heart" size={17} /> Support Wanjiku
                 </button>
@@ -267,7 +267,10 @@ function Profile() {
                   <Icon name="check" size={14} /> Early guide access
                 </span>
               </div>
-              <button className="button button-pink [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--pink)] [color:white] [box-shadow:0_7px_18px_rgba(236,_72,_153,_.2)] hover:[background:var(--pink-dark)]">
+              <button
+                className="button button-pink [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--pink)] [color:white] [box-shadow:0_7px_18px_rgba(236,_72,_153,_.2)] hover:[background:var(--pink-dark)]"
+                onClick={() => setTransaction("membership")}
+              >
                 Join for KSh 350 / month
               </button>
             </div>
@@ -295,7 +298,7 @@ function Profile() {
             </p>
             <button
               className="button button-pink button-full [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--pink)] [color:white] [box-shadow:0_7px_18px_rgba(236,_72,_153,_.2)] hover:[background:var(--pink-dark)] [width:100%] [min-height:50px]"
-              onClick={() => setTipOpen(true)}
+              onClick={() => setTransaction("tip")}
             >
               Drop a cookie
             </button>
@@ -323,7 +326,26 @@ function Profile() {
           </div>
         </aside>
       </div>
-      {tipOpen && <TipModal close={() => setTipOpen(false)} />}
+      {transaction && (
+        <TransactionModal
+          close={() => setTransaction(null)}
+          title={
+            transaction === "tip"
+              ? "Drop Wanjiku a cookie"
+              : "Join Wanjiku’s Inner Circle"
+          }
+          description={
+            transaction === "tip"
+              ? "Choose an amount and enter your M-PESA number to review support."
+              : "Get monthly travel notes, members-only Q&As and early guide access."
+          }
+          amount={transaction === "tip" ? 250 : 350}
+          amountOptions={transaction === "tip" ? [20, 50, 100, 250, 500] : []}
+          frequency={transaction === "tip" ? "one-time" : "monthly"}
+          platformFeeRate={transaction === "tip" ? 0.05 : 0}
+          showMessage={transaction === "tip"}
+        />
+      )}
     </main>
   );
 }

@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight, ArrowLeft } from "lucide-react";
+import AccountTypeSwitch from "../components/AccountTypeSwitch";
 
 const Login = ({ onSubmit }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const accountType = searchParams.get("role") === "fan" ? "fan" : "creator";
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
@@ -11,6 +14,11 @@ const Login = ({ onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const selectAccountType = (type) => {
+    setSearchParams(type === "fan" ? { role: type } : {}, { replace: true });
+    setError("");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +35,18 @@ const Login = ({ onSubmit }) => {
     try {
       setError("");
       setLoading(true);
-      await onSubmit({
-        username: formData.identifier.trim(),
-        password: formData.password,
-      });
+      await onSubmit(
+        accountType === "fan"
+          ? {
+              email: formData.identifier.trim(),
+              password: formData.password,
+            }
+          : {
+              username: formData.identifier.trim(),
+              password: formData.password,
+            },
+        accountType,
+      );
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -60,6 +76,12 @@ const Login = ({ onSubmit }) => {
           </span>
         </Link>
 
+        <AccountTypeSwitch
+          value={accountType}
+          onChange={selectAccountType}
+          disabled={loading}
+        />
+
         {/* Heading */}
         <div className="text-center mb-8">
           <div className="mx-auto mb-5 h-14 w-14 rounded-2xl bg-sky-100 flex items-center justify-center">
@@ -69,7 +91,9 @@ const Login = ({ onSubmit }) => {
           <h1 className="text-3xl font-bold text-slate-900">Welcome back</h1>
 
           <p className="mt-2 text-slate-500">
-            Sign in to continue building your creator business.
+            {accountType === "fan"
+              ? "Sign in to follow creators and support the work you love."
+              : "Sign in to continue building your creator business."}
           </p>
         </div>
 
@@ -80,15 +104,19 @@ const Login = ({ onSubmit }) => {
               htmlFor="identifier"
               className="block text-sm font-semibold text-slate-700 mb-2"
             >
-              Username or email
+              {accountType === "fan" ? "Email address" : "Username or email"}
             </label>
 
             <input
               id="identifier"
               name="identifier"
-              type="text"
-              autoComplete="username"
-              placeholder="Enter your username or email"
+              type={accountType === "fan" ? "email" : "text"}
+              autoComplete={accountType === "fan" ? "email" : "username"}
+              placeholder={
+                accountType === "fan"
+                  ? "Enter your email address"
+                  : "Enter your username or email"
+              }
               value={formData.identifier}
               onChange={handleChange}
               required
@@ -106,7 +134,7 @@ const Login = ({ onSubmit }) => {
               </label>
 
               <Link
-                to="/forgot-password"
+                to={`/forgot-password${accountType === "fan" ? "?role=fan" : ""}`}
                 className="text-sm font-medium text-sky-600 hover:text-sky-700"
               >
                 Forgot password?
@@ -156,7 +184,7 @@ const Login = ({ onSubmit }) => {
         <p className="mt-8 text-center text-sm text-slate-500">
           Don't have an account?{" "}
           <Link
-            to="/signup"
+            to={`/signup${accountType === "fan" ? "?role=fan" : ""}`}
             className="font-semibold text-sky-600 hover:text-sky-700"
           >
             Create an account

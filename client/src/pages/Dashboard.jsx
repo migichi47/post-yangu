@@ -13,14 +13,18 @@ function Dashboard({ go, onLogout }) {
   const [logoutError, setLogoutError] = useState("");
   const nav = [
     ["grid", "Overview", "overview"],
-    ["users", "My Profile", "my-profile"],
-    ["chart", "Analytics", "analytics"],
-    ["shop", "Rate Card", "rate-card"],
     ["inbox", "Brand Inquiries", "brand-inquiries"],
     ["shop", "Products & Services", "products"],
     ["wallet", "Tips & Earnings", "earnings"],
-    ["heart", "Superfan Memberships", "superfans"],
+    ["shop", "Rate Card", "rate-card"],
+    ["chart", "Analytics", "analytics"],
+    ["users", "My Profile", "my-profile"],
+    ["heart", "Fan Memberships", "superfans"],
   ];
+  const navClass = (slug) =>
+    activeSection === slug
+      ? "active"
+      : "transition-colors duration-150 hover:bg-[var(--blue-light)] hover:text-[var(--navy)]";
 
   const handleLogout = async () => {
     setLogoutError("");
@@ -54,7 +58,7 @@ function Dashboard({ go, onLogout }) {
         <nav>
           {nav.map(([icon, label, slug]) => (
             <button
-              className={activeSection === slug ? "active" : ""}
+              className={navClass(slug)}
               onClick={() =>
                 navigate(slug === "overview" ? "/dashboard" : `/dashboard/${slug}`)
               }
@@ -297,7 +301,7 @@ function Dashboard({ go, onLogout }) {
       <nav className="mobile-bottom-nav [display:none] [@media(max-width:760px)]:[position:fixed] [@media(max-width:760px)]:[z-index:50] [@media(max-width:760px)]:[left:0] [@media(max-width:760px)]:[right:0] [@media(max-width:760px)]:[bottom:0] [@media(max-width:760px)]:[height:65px] [@media(max-width:760px)]:[display:grid] [@media(max-width:760px)]:[grid-template-columns:repeat(8,_minmax(68px,_1fr))] [@media(max-width:760px)]:[overflow-x:auto] [@media(max-width:760px)]:[scrollbar-width:none] [@media(max-width:760px)]:[background:white] [@media(max-width:760px)]:[border-top:1px_solid_var(--border)] [@media(max-width:760px)]:[&_button]:[border:0] [@media(max-width:760px)]:[&_button]:[background:none] [@media(max-width:760px)]:[&_button]:[display:flex] [@media(max-width:760px)]:[&_button]:[flex-direction:column] [@media(max-width:760px)]:[&_button]:[justify-content:center] [@media(max-width:760px)]:[&_button]:[align-items:center] [@media(max-width:760px)]:[&_button]:[gap:3px] [@media(max-width:760px)]:[&_button]:[color:var(--muted)] [@media(max-width:760px)]:[&_button]:[font-size:8px] [@media(max-width:760px)]:[&_button.active]:[color:var(--blue)]">
         {nav.map(([icon, label, slug]) => (
           <button
-            className={activeSection === slug ? "active" : ""}
+            className={navClass(slug)}
             onClick={() =>
               navigate(slug === "overview" ? "/dashboard" : `/dashboard/${slug}`)
             }

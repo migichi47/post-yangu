@@ -13,7 +13,9 @@ Authentication endpoints:
 
 - `POST /api/auth/signup` with username, password, display name, and profile image creates a creator and signs them in immediately.
 - `POST /api/auth/login` with `{ "username": "...", "password": "..." }` or `{ "email": "...", "password": "..." }` creates a one-hour session.
+- `POST /api/auth/fan/signup` with `{ "fullName": "...", "email": "...", "password": "..." }` creates a fan account and signs them in immediately. Fan email addresses are unique and passwords must contain at least 8 characters.
+- `POST /api/auth/fan/login` with `{ "email": "...", "password": "..." }` creates a one-hour fan session.
 - `POST /api/auth/logout` deletes the current session and clears its cookie.
-- `GET /api/auth/me` returns the logged-in creator, or `401` when no valid session exists.
+- `GET /api/auth/me` returns the logged-in account with `accountType` (`creator` or `fan`), or `401` when no valid session exists.
 
 The browser must send requests with credentials enabled so it can store and send the session cookie.

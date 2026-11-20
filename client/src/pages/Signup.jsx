@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
+import AccountTypeSwitch from "../components/AccountTypeSwitch";
 
 const creatorNiches = [
   "Travel & Adventure",
@@ -34,7 +35,10 @@ const creatorNiches = [
 ];
 
 const Signup = ({ onSubmit }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const accountType = searchParams.get("role") === "fan" ? "fan" : "creator";
   const [formData, setFormData] = useState({
+    fullName: "",
     username: "",
     password: "",
     displayName: "",
@@ -48,6 +52,11 @@ const Signup = ({ onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const selectAccountType = (type) => {
+    setSearchParams(type === "fan" ? { role: type } : {}, { replace: true });
+    setError("");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,7 +82,16 @@ const Signup = ({ onSubmit }) => {
     try {
       setError("");
       setLoading(true);
-      await onSubmit(formData);
+      await onSubmit(
+        accountType === "fan"
+          ? {
+              fullName: formData.fullName.trim(),
+              email: formData.email.trim(),
+              password: formData.password,
+            }
+          : formData,
+        accountType,
+      );
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -103,6 +121,12 @@ const Signup = ({ onSubmit }) => {
           </span>
         </Link>
 
+        <AccountTypeSwitch
+          value={accountType}
+          onChange={selectAccountType}
+          disabled={loading}
+        />
+
         {/* Heading */}
         <div className="text-center mb-8">
           <div className="mx-auto mb-5 h-14 w-14 rounded-2xl bg-pink-100 flex items-center justify-center">
@@ -110,14 +134,135 @@ const Signup = ({ onSubmit }) => {
           </div>
 
           <h1 className="text-3xl font-bold text-slate-900">
-            Become a creator
+            {accountType === "fan" ? "Join as a fan" : "Become a creator"}
           </h1>
 
           <p className="mt-2 text-slate-500">
-            Create your profile and start turning your audience into income.
+            {accountType === "fan"
+              ? "Create an account to follow creators and support their work."
+              : "Create your profile and start turning your audience into income."}
           </p>
         </div>
 
+        {accountType === "fan" && (
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+          >
+            <section>
+              <h2 className="text-lg font-bold text-slate-900">
+                Fan account details
+              </h2>
+              <p className="mb-5 mt-1 text-sm text-slate-500">
+                All you need is your name, email and a password.
+              </p>
+
+              <div className="space-y-5">
+                <div>
+                  <label
+                    htmlFor="fan-full-name"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
+                    Full name
+                  </label>
+                  <input
+                    id="fan-full-name"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="Your full name"
+                    autoComplete="name"
+                    required
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="fan-email"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
+                    Email address
+                  </label>
+                  <input
+                    id="fan-email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    required
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="fan-password"
+                    className="mb-2 block text-sm font-semibold text-slate-700"
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="fan-password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Create a strong password"
+                      autoComplete="new-password"
+                      minLength={8}
+                      required
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 pr-12 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((previous) => !previous)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                  <p className="mt-2 text-xs text-slate-400">
+                    Use at least 8 characters.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? "Creating account..." : "Create fan account"}
+              {!loading && <ArrowRight size={18} />}
+            </button>
+
+            <p className="text-center text-sm text-slate-500">
+              By creating an account, you agree to our{" "}
+              <Link to="/terms" className="font-semibold text-sky-600">
+                Terms
+              </Link>{" "}
+              and{" "}
+              <Link to="/privacy" className="font-semibold text-sky-600">
+                Privacy Policy
+              </Link>
+              .
+            </p>
+          </form>
+        )}
+
+        {accountType === "creator" && (
         <form
           onSubmit={handleSubmit}
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8 space-y-7"
@@ -363,11 +508,12 @@ const Signup = ({ onSubmit }) => {
             .
           </p>
         </form>
+        )}
 
         <p className="mt-7 text-center text-sm text-slate-500">
           Already have an account?{" "}
           <Link
-            to="/login"
+            to={`/login${accountType === "fan" ? "?role=fan" : ""}`}
             className="font-semibold text-sky-600 hover:text-sky-700"
           >
             Sign in

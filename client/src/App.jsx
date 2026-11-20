@@ -8,8 +8,12 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Discover from "./pages/Discover";
+import CreatorDetails from "./pages/CreatorDetails";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+
+const creatorAccountTypes = ["creator"];
+const authenticatedAccountTypes = ["creator", "fan"];
 
 function RouteEffects() {
   const location = useLocation();
@@ -29,7 +33,10 @@ function RouteEffects() {
   return null;
 }
 
-function RequireAuth({ children }) {
+function RequireAuth({
+  children,
+  allowedAccountTypes = creatorAccountTypes,
+}) {
   const location = useLocation();
   const [status, setStatus] = useState("checking");
   const [error, setError] = useState("");
@@ -37,9 +44,13 @@ function RequireAuth({ children }) {
   useEffect(() => {
     let active = true;
     getCurrentUser()
-      .then((creator) => {
+      .then((currentUser) => {
         if (active) {
-          setStatus(creator ? "authenticated" : "unauthenticated");
+          setStatus(
+            currentUser && allowedAccountTypes.includes(currentUser.accountType)
+              ? "authenticated"
+              : "unauthenticated",
+          );
         }
       })
       .catch((authError) => {
@@ -56,7 +67,7 @@ function RequireAuth({ children }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [allowedAccountTypes]);
 
   if (status === "checking") {
     return (
@@ -88,8 +99,18 @@ function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
   const go = (page) => navigate(`/${page === "home" ? "" : page}`);
-  const continueAfterAuth = () => {
+  const continueAfterAuth = (accountType) => {
     const requestedPath = location.state?.from?.pathname;
+    if (accountType === "fan") {
+      navigate(
+        requestedPath?.startsWith("/creators/")
+          ? requestedPath
+          : "/discover",
+        { replace: true },
+      );
+      return;
+    }
+
     navigate(
       requestedPath === "/profile" || requestedPath?.startsWith("/dashboard")
         ? requestedPath
@@ -97,13 +118,13 @@ function AppRoutes() {
       { replace: true },
     );
   };
-  const login = async (data) => {
-    await postAuth("login", data);
-    continueAfterAuth();
+  const login = async (data, accountType) => {
+    await postAuth(accountType === "fan" ? "fan/login" : "login", data);
+    continueAfterAuth(accountType);
   };
-  const signup = async (data) => {
-    await postAuth("signup", data);
-    continueAfterAuth();
+  const signup = async (data, accountType) => {
+    await postAuth(accountType === "fan" ? "fan/signup" : "signup", data);
+    continueAfterAuth(accountType);
   };
   const logout = async () => {
     await endSession();
@@ -130,10 +151,23 @@ function AppRoutes() {
         <Route
           path="/discover"
           element={
-            <div className="app">
-              <Header go={go} />
-              <Discover go={go} />
-            </div>
+            <RequireAuth allowedAccountTypes={authenticatedAccountTypes}>
+              <div className="app">
+                <Header go={go} />
+                <Discover go={go} />
+              </div>
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/creators/:handle"
+          element={
+            <RequireAuth allowedAccountTypes={authenticatedAccountTypes}>
+              <div className="app">
+                <Header go={go} />
+                <CreatorDetails />
+              </div>
+            </RequireAuth>
           }
         />
         <Route

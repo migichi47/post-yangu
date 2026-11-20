@@ -1,3 +1,5 @@
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
 import CreatorCard from "../components/CreatorCard";
 import Footer from "../components/Footer";
 import Icon from "../components/Icon";
@@ -5,6 +7,29 @@ import { creators } from "../data/creators";
 import { photos } from "../data/photos";
 
 function Home({ go }) {
+  const heroCopyRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        "[data-hero-reveal]",
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.72,
+          stagger: 0.13,
+          ease: "power3.out",
+          clearProps: "transform,opacity,visibility",
+        },
+      );
+    }, heroCopyRef);
+
+    return () => context.revert();
+  }, []);
+
   return (
     <>
       <main>
@@ -12,21 +37,30 @@ function Home({ go }) {
           <div className="hero-glow hero-glow-one [position:absolute] [border-radius:50%] [filter:blur(4px)] [width:360px] [height:360px] [background:rgba(221,_242,_255,_.8)] [top:130px] [right:12%]" />
           <div className="hero-glow hero-glow-two [position:absolute] [border-radius:50%] [filter:blur(4px)] [width:260px] [height:260px] [background:rgba(255,_214,_231,_.45)] [bottom:-80px] [right:30%]" />
           <div className="section-shell hero-grid [width:min(1180px,_calc(100%_-_40px))] [margin-inline:auto] [@media(max-width:760px)]:[width:min(100%_-_28px,_1180px)] [display:grid] [grid-template-columns:1fr_1fr] [gap:88px] [align-items:center] [padding-block:74px] [position:relative] [z-index:1] [@media(max-width:1000px)]:[gap:30px] [@media(max-width:760px)]:[grid-template-columns:1fr] [@media(max-width:760px)]:[padding-block:55px_40px]">
-            <div className="hero-copy [&_h1]:[font-size:clamp(44px,_5vw,_68px)] [&_h1]:[letter-spacing:-.055em] [&_h1]:[line-height:1.05] [&_h1]:[margin:24px_0] [&_h1_em]:[font-style:normal] [&_h1_em]:[color:var(--pink)] [&_>_p]:[font-size:18px] [&_>_p]:[line-height:1.7] [&_>_p]:[color:#526078] [&_>_p]:[max-width:580px] [@media(max-width:760px)]:[&_h1]:[font-size:44px] [@media(max-width:760px)]:[&_>_p]:[font-size:16px] [@media(max-width:430px)]:[&_h1]:[font-size:39px]">
-              <span className="eyebrow [display:inline-flex] [align-items:center] [gap:7px] [color:var(--blue)] [font-size:12px] [font-weight:800] [letter-spacing:.08em] [text-transform:uppercase] [background:var(--blue-light)] [border:1px_solid_#c3e7fc] [padding:8px_12px] [border-radius:99px] [letter-spacing:.03em] [text-transform:none] [font-size:13px]">
+            <div
+              className="hero-copy [&_h1]:[font-size:clamp(44px,_5vw,_68px)] [&_h1]:[letter-spacing:-.055em] [&_h1]:[line-height:1.05] [&_h1]:[margin:24px_0] [&_h1_em]:[font-style:normal] [&_h1_em]:[color:var(--pink)] [&_>_p]:[font-size:18px] [&_>_p]:[line-height:1.7] [&_>_p]:[color:#526078] [&_>_p]:[max-width:580px] [@media(max-width:760px)]:[&_h1]:[font-size:44px] [@media(max-width:760px)]:[&_>_p]:[font-size:16px] [@media(max-width:430px)]:[&_h1]:[font-size:39px]"
+              ref={heroCopyRef}
+            >
+              <span
+                data-hero-reveal
+                className="eyebrow [display:inline-flex] [align-items:center] [gap:7px] [color:var(--blue)] [font-size:12px] [font-weight:800] [letter-spacing:.08em] [text-transform:uppercase] [background:var(--blue-light)] [border:1px_solid_#c3e7fc] [padding:8px_12px] [border-radius:99px] [letter-spacing:.03em] [text-transform:none] [font-size:13px]"
+              >
                 <Icon name="spark" size={16} /> Built for Kenyan creators
               </span>
-              <h1>
+              <h1 data-hero-reveal className="font-bold">
                 Your audience.
                 <br />
                 Your value. <em>Your income.</em>
               </h1>
-              <p>
+              <p data-hero-reveal>
                 Turn your creativity into a business. Get discovered by brands,
                 sell your products, receive fan support and build a community
                 that pays.
               </p>
-              <div className="hero-actions [display:flex] [gap:12px] [margin-top:30px] [@media(max-width:760px)]:[flex-direction:column] [@media(max-width:760px)]:[align-items:stretch]">
+              <div
+                data-hero-reveal
+                className="hero-actions [display:flex] [gap:12px] [margin-top:30px] [@media(max-width:760px)]:[flex-direction:column] [@media(max-width:760px)]:[align-items:stretch]"
+              >
                 <button
                   className="button button-primary button-large [border:1px_solid_transparent] [border-radius:10px] [min-height:42px] [padding:0_18px] [display:inline-flex] [justify-content:center] [align-items:center] [gap:8px] [font-weight:700] [font-size:14px] [cursor:pointer] [transition:transform_.2s,_box-shadow_.2s,_background_.2s] [white-space:nowrap] hover:[transform:translateY(-1px)] [background:var(--navy)] [color:white] [box-shadow:0_7px_18px_rgba(23,_37,_84,_.17)] hover:[background:#24366d] [min-height:52px] [padding:0_24px] [border-radius:12px] [font-size:15px]"
                   onClick={() => go("login")}
@@ -40,7 +74,10 @@ function Home({ go }) {
                   Discover Creators
                 </button>
               </div>
-              <div className="hero-proof [display:flex] [align-items:center] [gap:13px] [margin-top:34px] [&_strong]:[display:block] [&_span]:[display:block] [&_strong]:[font-size:13px] [&_span]:[font-size:12px] [&_span]:[color:var(--muted)] [&_span]:[margin-top:2px]">
+              <div
+                data-hero-reveal
+                className="hero-proof [display:flex] [align-items:center] [gap:13px] [margin-top:34px] [&_strong]:[display:block] [&_span]:[display:block] [&_strong]:[font-size:13px] [&_span]:[font-size:12px] [&_span]:[color:var(--muted)] [&_span]:[margin-top:2px]"
+              >
                 <div className="avatar-stack [display:flex] [&_img]:[width:38px] [&_img]:[height:38px] [&_img]:[object-fit:cover] [&_img]:[border-radius:50%] [&_img]:[border:3px_solid_white] [&_img]:[margin-left:-9px] [&_img:first-child]:[margin:0]">
                   {[photos.amina, photos.kamau, photos.njeri].map((photo) => (
                     <img key={photo} src={photo} alt="" />
@@ -159,7 +196,7 @@ function Home({ go }) {
                 <CreatorCard
                   key={creator.handle}
                   creator={creator}
-                  onView={() => go("profile")}
+                  onView={() => go(`creators/${creator.handle.slice(1)}`)}
                 />
               ))}
             </div>
@@ -259,15 +296,20 @@ function Home({ go }) {
                 ],
               ].map(([icon, title, text, color]) => (
                 <article
-                  className={`feature-card ${color} ${color === "sky" ? "[background:#eef8ff] [border-color:#d7efff]" : color === "pink" ? "[background:#fff1f7] [border-color:#ffe0ed]" : color === "peach" ? "[background:#fff6ee] [border-color:#fde8d3]" : color === "lilac" ? "[background:#f6f2ff] [border-color:#e9ddff]" : color === "mint" ? "[background:#effbf5] [border-color:#d7f5e5]" : "[background:#fffae9] [border-color:#f8efc5]"}`}
+                  className={`p-5 flex flex-col items-start gap-3 feature-card ${color} ${color === "sky" ? "[background:#eef8ff] [border-color:#d7efff]" : color === "pink" ? "[background:#fff1f7] [border-color:#ffe0ed]" : color === "peach" ? "[background:#fff6ee] [border-color:#fde8d3]" : color === "lilac" ? "[background:#f6f2ff] [border-color:#e9ddff]" : color === "mint" ? "[background:#effbf5] [border-color:#d7f5e5]" : "[background:#fffae9] [border-color:#f8efc5]"}`}
                   key={title}
                 >
-                  <span>
-                    <Icon name={icon} />
-                  </span>
-                  <h3>{title}</h3>
+                  <div className="flex items-center gap-5">
+                    <span className="bg-gray-200 rounded-full p-2">
+                      <Icon name={icon} />
+                    </span>
+                    <h3 className="font-bold">{title}</h3>
+                  </div>
                   <p>{text}</p>
-                  <button onClick={() => go("profile")}>
+                  <button
+                    className="flex items-center gap-1 text-gray-500 cursor-pointer"
+                    onClick={() => go("profile")}
+                  >
                     Learn more <Icon name="arrow" size={15} />
                   </button>
                 </article>

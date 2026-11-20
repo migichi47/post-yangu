@@ -1,8 +1,5 @@
-import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
 import mongoose from "mongoose";
-
-const scrypt = promisify(scryptCallback);
+import { hashPassword, verifyPassword } from "../utils/password.js";
 const creatorSchema = new mongoose.Schema(
   {
     username: {
@@ -55,32 +52,16 @@ const creatorSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-creatorSchema.pre("save", async function hashPassword() {
+creatorSchema.pre("save", async function hashCreatorPassword() {
   if (!this.isModified("password")) {
     return;
   }
 
-  const salt = randomBytes(16).toString("hex");
-  const passwordHash = await scrypt(this.password, salt, 64);
-  this.password = `scrypt$${salt}$${passwordHash.toString("hex")}`;
+  this.password = await hashPassword(this.password);
 });
 
 creatorSchema.methods.comparePassword = async function comparePassword(candidate) {
-  if (typeof candidate !== "string" || typeof this.password !== "string") {
-    return false;
-  }
-
-  const [algorithm, salt, storedHash] = this.password.split("$");
-  if (algorithm !== "scrypt" || !salt || !storedHash) {
-    return false;
-  }
-
-  const passwordHash = await scrypt(candidate, salt, 64);
-  const expectedHash = Buffer.from(storedHash, "hex");
-  return (
-    passwordHash.length === expectedHash.length &&
-    timingSafeEqual(passwordHash, expectedHash)
-  );
+  return verifyPassword(candidate, this.password);
 };
 
 const Creator =

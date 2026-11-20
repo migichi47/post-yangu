@@ -85,7 +85,7 @@ function Discover({ go }) {
               <CreatorCard
                 key={creator.handle}
                 creator={creator}
-                onView={() => go("profile")}
+                onView={() => go(`creators/${creator.handle.slice(1)}`)}
               />
             ))}
           </div>

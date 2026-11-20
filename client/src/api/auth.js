@@ -34,7 +34,15 @@ export async function getCurrentUser() {
     throw new Error(result.error || "Unable to verify your session.");
   }
 
-  return result.creator;
+  const user = result.creator || result.fan;
+  if (!user) {
+    return null;
+  }
+
+  return {
+    accountType: result.accountType || (result.creator ? "creator" : "fan"),
+    user,
+  };
 }
 
 export async function logout() {
