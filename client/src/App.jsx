@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
-import { getCurrentUser, postAuth } from "./api/auth";
+import { getCurrentUser, logout as endSession, postAuth } from "./api/auth";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
@@ -35,7 +35,6 @@ function RequireAuth({ children }) {
 
   useEffect(() => {
     let active = true;
-
     getCurrentUser()
       .then((creator) => {
         if (active) {
@@ -103,6 +102,10 @@ function AppRoutes() {
     await postAuth("signup", data);
     continueAfterAuth();
   };
+  const logout = async () => {
+    await endSession();
+    navigate("/", { replace: true });
+  };
 
   return (
     <>
@@ -147,7 +150,7 @@ function AppRoutes() {
           path="/dashboard"
           element={
             <RequireAuth>
-              <Dashboard go={go} />
+              <Dashboard go={go} onLogout={logout} />
             </RequireAuth>
           }
         />

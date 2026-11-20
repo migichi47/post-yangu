@@ -13,6 +13,7 @@ Authentication endpoints:
 
 - `POST /api/auth/signup` with username, password, display name, and profile image creates a creator and signs them in immediately.
 - `POST /api/auth/login` with `{ "username": "...", "password": "..." }` or `{ "email": "...", "password": "..." }` creates a one-hour session.
+- `POST /api/auth/logout` deletes the current session and clears its cookie.
 - `GET /api/auth/me` returns the logged-in creator, or `401` when no valid session exists.
 
 The browser must send requests with credentials enabled so it can store and send the session cookie.

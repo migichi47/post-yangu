@@ -16,6 +16,15 @@ function publicCreator(creator) {
   };
 }
 
+function clearSessionCookie(response) {
+  response.clearCookie("postyangu.sid", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+}
+
 async function createSession(request, creator) {
   await new Promise((resolve, reject) => {
     request.session.regenerate((error) => {
@@ -146,9 +155,21 @@ export async function me(request, response) {
         else resolve();
       });
     });
-    response.clearCookie("postyangu.sid", { path: "/" });
+    clearSessionCookie(response);
     return response.status(401).json({ error: "Not authenticated." });
   }
 
   return response.json({ creator: publicCreator(creator) });
+}
+
+export async function logout(request, response) {
+  await new Promise((resolve, reject) => {
+    request.session.destroy((error) => {
+      if (error) reject(error);
+      else resolve();
+    });
+  });
+
+  clearSessionCookie(response);
+  return response.sendStatus(204);
 }

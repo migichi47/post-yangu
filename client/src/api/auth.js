@@ -36,3 +36,15 @@ export async function getCurrentUser() {
 
   return result.creator;
 }
+
+export async function logout() {
+  const response = await fetch(`${serverUrl}/api/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const result = await response.json();
+    throw new Error(result.error || "Unable to log out. Please try again.");
+  }
+}

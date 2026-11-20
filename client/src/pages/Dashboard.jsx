@@ -3,8 +3,10 @@ import Icon from "../components/Icon";
 import { photos } from "../data/photos";
 import Logo from "../components/Logo";
 
-function Dashboard({ go }) {
+function Dashboard({ go, onLogout }) {
   const [active, setActive] = useState("Overview");
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
   const nav = [
     ["grid", "Overview"],
     ["users", "My Profile"],
@@ -15,6 +17,21 @@ function Dashboard({ go }) {
     ["wallet", "Tips & Earnings"],
     ["heart", "Superfan Memberships"],
   ];
+
+  const handleLogout = async () => {
+    setLogoutError("");
+    setLoggingOut(true);
+    try {
+      await onLogout();
+    } catch (error) {
+      setLogoutError(
+        error instanceof Error ? error.message : "Unable to log out.",
+      );
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
   return (
     <main className="dashboard [min-height:100vh] [background:var(--surface)] [display:grid] [grid-template-columns:245px_1fr] [@media(max-width:1000px)]:[grid-template-columns:200px_1fr] [@media(max-width:760px)]:[display:block] [@media(max-width:760px)]:[padding-bottom:70px]">
       <aside className="dash-sidebar [position:fixed] [left:0] [top:0] [bottom:0] [width:245px] [background:white] [border-right:1px_solid_var(--border)] [padding:23px_16px] [display:flex] [flex-direction:column] [z-index:30] [&_>_.logo]:[padding-left:8px] [&_nav]:[display:flex] [&_nav]:[flex-direction:column] [&_nav]:[gap:3px] [&_nav_button]:[border:0] [&_nav_button]:[background:none] [&_nav_button]:[min-height:40px] [&_nav_button]:[border-radius:8px] [&_nav_button]:[display:flex] [&_nav_button]:[align-items:center] [&_nav_button]:[gap:11px] [&_nav_button]:[padding:0_11px] [&_nav_button]:[color:var(--muted)] [&_nav_button]:[font-size:11px] [&_nav_button]:[font-weight:700] [&_nav_button]:[cursor:pointer] [&_nav_button.active]:[color:var(--navy)] [&_nav_button.active]:[background:var(--blue-light)] [&_nav_button_em]:[margin-left:auto] [&_nav_button_em]:[font-style:normal] [&_nav_button_em]:[font-size:9px] [&_nav_button_em]:[background:var(--pink)] [&_nav_button_em]:[color:white] [&_nav_button_em]:[width:19px] [&_nav_button_em]:[height:19px] [&_nav_button_em]:[border-radius:50%] [&_nav_button_em]:[display:grid] [&_nav_button_em]:[place-items:center] [@media(max-width:1000px)]:[width:200px] [@media(max-width:760px)]:[display:none]">
@@ -68,9 +85,22 @@ function Dashboard({ go }) {
             >
               View public profile
             </button>
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 disabled:cursor-wait disabled:opacity-60 max-[760px]:px-2 max-[760px]:py-1 max-[760px]:text-xs"
+            >
+              {loggingOut ? "Logging out..." : "Log out"}
+            </button>
             <img src={photos.wanjiku} alt="" />
           </div>
         </header>
+        {logoutError && (
+          <p className="px-5 pt-3 text-sm text-red-600" role="alert">
+            {logoutError}
+          </p>
+        )}
         <div className="dash-content [max-width:1260px] [margin:auto] [padding:32px] [@media(max-width:760px)]:[padding:22px_14px]">
           <div className="dash-welcome [display:flex] [justify-content:space-between] [align-items:end] [&_h1]:[font-size:28px] [&_h1]:[margin:7px_0_4px] [&_h1]:[letter-spacing:-.03em] [&_p]:[color:var(--muted)] [&_p]:[font-size:12px] [&_p]:[margin:0] [@media(max-width:760px)]:[align-items:start] [@media(max-width:760px)]:[&_h1]:[font-size:24px] [@media(max-width:760px)]:[&_>_.button]:[display:none]">
             <div>
