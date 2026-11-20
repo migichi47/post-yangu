@@ -6,6 +6,7 @@ import {
   getCreator,
   unfollowCreator,
 } from "../api/creators";
+import CreatorShop from "../components/CreatorShop";
 import ExclusiveChannel from "../components/ExclusiveChannel";
 import Icon from "../components/Icon";
 import TransactionModal from "../components/TransactionModal";
@@ -244,6 +245,8 @@ function CreatorDetails() {
         creator={creator}
         onJoinMembership={() => setTransaction(membership)}
       />
+
+      <CreatorShop key={creator.username} creator={creator} />
 
       <section className="mx-auto w-[min(100%-40px,1000px)]">
         <div className="mb-5">
