@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import { getCurrentUser, logout as endSession, postAuth } from "./api/auth";
+import { RateCardVisibilityProvider } from "./contexts/RateCardVisibilityProvider";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
@@ -90,7 +91,9 @@ function AppRoutes() {
   const continueAfterAuth = () => {
     const requestedPath = location.state?.from?.pathname;
     navigate(
-      requestedPath === "/profile" ? "/profile" : "/dashboard",
+      requestedPath === "/profile" || requestedPath?.startsWith("/dashboard")
+        ? requestedPath
+        : "/dashboard",
       { replace: true },
     );
   };
@@ -147,7 +150,7 @@ function AppRoutes() {
         <Route path="/login" element={<Login onSubmit={login} />} />
         <Route path="/signup" element={<Signup onSubmit={signup} />} />
         <Route
-          path="/dashboard"
+          path="/dashboard/:section?"
           element={
             <RequireAuth>
               <Dashboard go={go} onLogout={logout} />
@@ -161,8 +164,10 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <RateCardVisibilityProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </RateCardVisibilityProvider>
   );
 }

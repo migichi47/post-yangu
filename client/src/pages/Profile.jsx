@@ -2,9 +2,11 @@ import { useState } from "react";
 import Icon from "../components/Icon";
 import TipModal from "../components/TipModal";
 import { photos } from "../data/photos";
+import { useRateCardVisibility } from "../contexts/RateCardVisibilityContext";
 
 function Profile() {
   const [tipOpen, setTipOpen] = useState(false);
+  const { isRateCardPublic } = useRateCardVisibility();
   const rates = [
     [
       "TikTok video",
@@ -154,6 +156,7 @@ function Profile() {
               </p>
             </div>
           </section>
+          {isRateCardPublic && (
           <section className="content-card [background:white] [border:1px_solid_var(--border)] [border-radius:16px] [padding:25px] [@media(max-width:760px)]:[padding:18px]">
             <div className="content-heading [display:flex] [justify-content:space-between] [align-items:start] [gap:15px] [margin-bottom:22px] [&_h2]:[font-size:21px] [&_h2]:[letter-spacing:-.02em] [&_h2]:[margin:7px_0_0] [@media(max-width:760px)]:[flex-direction:column]">
               <div>
@@ -202,6 +205,7 @@ function Profile() {
               </button>
             </div>
           </section>
+          )}
           <section className="content-card [background:white] [border:1px_solid_var(--border)] [border-radius:16px] [padding:25px] [@media(max-width:760px)]:[padding:18px]">
             <div className="content-heading [display:flex] [justify-content:space-between] [align-items:start] [gap:15px] [margin-bottom:22px] [&_h2]:[font-size:21px] [&_h2]:[letter-spacing:-.02em] [&_h2]:[margin:7px_0_0] [@media(max-width:760px)]:[flex-direction:column]">
               <div>

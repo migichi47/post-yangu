@@ -1,21 +1,25 @@
 import { useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import { photos } from "../data/photos";
 import Logo from "../components/Logo";
+import DashboardSection from "./DashboardSections";
 
 function Dashboard({ go, onLogout }) {
-  const [active, setActive] = useState("Overview");
+  const navigate = useNavigate();
+  const { section } = useParams();
+  const activeSection = section || "overview";
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
   const nav = [
-    ["grid", "Overview"],
-    ["users", "My Profile"],
-    ["chart", "Analytics"],
-    ["shop", "Rate Card"],
-    ["inbox", "Brand Inquiries"],
-    ["shop", "Products & Services"],
-    ["wallet", "Tips & Earnings"],
-    ["heart", "Superfan Memberships"],
+    ["grid", "Overview", "overview"],
+    ["users", "My Profile", "my-profile"],
+    ["chart", "Analytics", "analytics"],
+    ["shop", "Rate Card", "rate-card"],
+    ["inbox", "Brand Inquiries", "brand-inquiries"],
+    ["shop", "Products & Services", "products"],
+    ["wallet", "Tips & Earnings", "earnings"],
+    ["heart", "Superfan Memberships", "superfans"],
   ];
 
   const handleLogout = async () => {
@@ -32,6 +36,10 @@ function Dashboard({ go, onLogout }) {
     }
   };
 
+  if (!nav.some(([, , slug]) => slug === activeSection)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <main className="dashboard [min-height:100vh] [background:var(--surface)] [display:grid] [grid-template-columns:245px_1fr] [@media(max-width:1000px)]:[grid-template-columns:200px_1fr] [@media(max-width:760px)]:[display:block] [@media(max-width:760px)]:[padding-bottom:70px]">
       <aside className="dash-sidebar [position:fixed] [left:0] [top:0] [bottom:0] [width:245px] [background:white] [border-right:1px_solid_var(--border)] [padding:23px_16px] [display:flex] [flex-direction:column] [z-index:30] [&_>_.logo]:[padding-left:8px] [&_nav]:[display:flex] [&_nav]:[flex-direction:column] [&_nav]:[gap:3px] [&_nav_button]:[border:0] [&_nav_button]:[background:none] [&_nav_button]:[min-height:40px] [&_nav_button]:[border-radius:8px] [&_nav_button]:[display:flex] [&_nav_button]:[align-items:center] [&_nav_button]:[gap:11px] [&_nav_button]:[padding:0_11px] [&_nav_button]:[color:var(--muted)] [&_nav_button]:[font-size:11px] [&_nav_button]:[font-weight:700] [&_nav_button]:[cursor:pointer] [&_nav_button.active]:[color:var(--navy)] [&_nav_button.active]:[background:var(--blue-light)] [&_nav_button_em]:[margin-left:auto] [&_nav_button_em]:[font-style:normal] [&_nav_button_em]:[font-size:9px] [&_nav_button_em]:[background:var(--pink)] [&_nav_button_em]:[color:white] [&_nav_button_em]:[width:19px] [&_nav_button_em]:[height:19px] [&_nav_button_em]:[border-radius:50%] [&_nav_button_em]:[display:grid] [&_nav_button_em]:[place-items:center] [@media(max-width:1000px)]:[width:200px] [@media(max-width:760px)]:[display:none]">
@@ -44,10 +52,12 @@ function Dashboard({ go, onLogout }) {
           </div>
         </div>
         <nav>
-          {nav.map(([icon, label]) => (
+          {nav.map(([icon, label, slug]) => (
             <button
-              className={active === label ? "active" : ""}
-              onClick={() => setActive(label)}
+              className={activeSection === slug ? "active" : ""}
+              onClick={() =>
+                navigate(slug === "overview" ? "/dashboard" : `/dashboard/${slug}`)
+              }
               key={label}
             >
               <Icon name={icon} size={19} />
@@ -102,6 +112,8 @@ function Dashboard({ go, onLogout }) {
           </p>
         )}
         <div className="dash-content [max-width:1260px] [margin:auto] [padding:32px] [@media(max-width:760px)]:[padding:22px_14px]">
+          {activeSection === "overview" ? (
+            <>
           <div className="dash-welcome [display:flex] [justify-content:space-between] [align-items:end] [&_h1]:[font-size:28px] [&_h1]:[margin:7px_0_4px] [&_h1]:[letter-spacing:-.03em] [&_p]:[color:var(--muted)] [&_p]:[font-size:12px] [&_p]:[margin:0] [@media(max-width:760px)]:[align-items:start] [@media(max-width:760px)]:[&_h1]:[font-size:24px] [@media(max-width:760px)]:[&_>_.button]:[display:none]">
             <div>
               <span className="kicker [display:inline-flex] [align-items:center] [gap:7px] [color:var(--blue)] [font-size:12px] [font-weight:800] [letter-spacing:.08em] [text-transform:uppercase]">
@@ -276,13 +288,19 @@ function Dashboard({ go, onLogout }) {
               </div>
             </section>
           </div>
+            </>
+          ) : (
+            <DashboardSection section={activeSection} go={go} />
+          )}
         </div>
       </div>
-      <nav className="mobile-bottom-nav [display:none] [@media(max-width:760px)]:[position:fixed] [@media(max-width:760px)]:[z-index:50] [@media(max-width:760px)]:[left:0] [@media(max-width:760px)]:[right:0] [@media(max-width:760px)]:[bottom:0] [@media(max-width:760px)]:[height:65px] [@media(max-width:760px)]:[display:grid] [@media(max-width:760px)]:[grid-template-columns:repeat(4,1fr)] [@media(max-width:760px)]:[background:white] [@media(max-width:760px)]:[border-top:1px_solid_var(--border)] [@media(max-width:760px)]:[&_button]:[border:0] [@media(max-width:760px)]:[&_button]:[background:none] [@media(max-width:760px)]:[&_button]:[display:flex] [@media(max-width:760px)]:[&_button]:[flex-direction:column] [@media(max-width:760px)]:[&_button]:[justify-content:center] [@media(max-width:760px)]:[&_button]:[align-items:center] [@media(max-width:760px)]:[&_button]:[gap:3px] [@media(max-width:760px)]:[&_button]:[color:var(--muted)] [@media(max-width:760px)]:[&_button]:[font-size:8px] [@media(max-width:760px)]:[&_button.active]:[color:var(--blue)]">
-        {nav.slice(0, 4).map(([icon, label]) => (
+      <nav className="mobile-bottom-nav [display:none] [@media(max-width:760px)]:[position:fixed] [@media(max-width:760px)]:[z-index:50] [@media(max-width:760px)]:[left:0] [@media(max-width:760px)]:[right:0] [@media(max-width:760px)]:[bottom:0] [@media(max-width:760px)]:[height:65px] [@media(max-width:760px)]:[display:grid] [@media(max-width:760px)]:[grid-template-columns:repeat(8,_minmax(68px,_1fr))] [@media(max-width:760px)]:[overflow-x:auto] [@media(max-width:760px)]:[scrollbar-width:none] [@media(max-width:760px)]:[background:white] [@media(max-width:760px)]:[border-top:1px_solid_var(--border)] [@media(max-width:760px)]:[&_button]:[border:0] [@media(max-width:760px)]:[&_button]:[background:none] [@media(max-width:760px)]:[&_button]:[display:flex] [@media(max-width:760px)]:[&_button]:[flex-direction:column] [@media(max-width:760px)]:[&_button]:[justify-content:center] [@media(max-width:760px)]:[&_button]:[align-items:center] [@media(max-width:760px)]:[&_button]:[gap:3px] [@media(max-width:760px)]:[&_button]:[color:var(--muted)] [@media(max-width:760px)]:[&_button]:[font-size:8px] [@media(max-width:760px)]:[&_button.active]:[color:var(--blue)]">
+        {nav.map(([icon, label, slug]) => (
           <button
-            className={active === label ? "active" : ""}
-            onClick={() => setActive(label)}
+            className={activeSection === slug ? "active" : ""}
+            onClick={() =>
+              navigate(slug === "overview" ? "/dashboard" : `/dashboard/${slug}`)
+            }
             key={label}
           >
             <Icon name={icon} />
